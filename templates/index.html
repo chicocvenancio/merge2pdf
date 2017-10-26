@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+        <title>Merge2PDF</title>
+        <link rel="stylesheet" href="//tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src='//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    </head>
+<body>
+    <div id="header" class="container">
+        {% if username %}
+        <p>Hello {{ username }}!</p>
+        <p><a href="{{ url_for('logout') }}">logout</a></p>
+        {% else %}
+        <p>{{ greeting }}</p>
+        <p><a href="{{ url_for('login') }}">login</a></p>
+        {% endif %}
+    </div>
+
+    <div id="main_content" class="container"><div class="row">
+        <div class="span12" style="margin-bottom:20px;margin-top:10px;">
+        <div class='lead'>This tool gets files from a Wikimedia Commons category and
+            provides a PDF to be downloaded or uploaded to commons.
+        </div>
+    <div id='output'></div>
+    <form class='form'>
+        <label for="category">Category:</label>
+        <input class="form-control" type="text" id="category">
+        <label for="filename">File name</label>
+        <input class="form-control" type="text" id="filename">
+        <label for="description">Description</label>
+            {% raw %}
+        <textarea class="form-control" id='description'>{{Information
+            | Description    = {{en|}}
+            | Date           = 
+            | Source         = 
+            | Author         = 
+            | Permission     = 
+            | Other_versions = 
+            }}
+            [[Category:]]</textarea>
+            {% endraw %}
+        <p class="help-block">Enter the description of the file with license,
+        permissions, category and anything else to go on the Commons page</p>
+
+        <input class='btn btn-primary' id='create' value='Create PDF' />
+        <input class='btn btn-success' id='upload_button' value='Upload' />
+    </form>
+</div>
+</div>
+</body>
+</html>
