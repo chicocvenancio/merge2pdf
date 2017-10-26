@@ -1,0 +1,6 @@
+flask
+requests
+img2pdf
+git+https://gerrit.wikimedia.org/r/pywikibot/core.git
+pyyaml
+mwoauth
