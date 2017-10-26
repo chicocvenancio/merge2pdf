@@ -16,10 +16,8 @@ app.config.update(
 
 @app.route('/')
 def index():
-    greeting = app.config['GREETING']
     username = flask.session.get('username', None)
-    return flask.render_template(
-        'index.html', username=username, greeting=greeting)
+    return flask.render_template('index.html', username=username)
 
 
 @app.route('/login')
