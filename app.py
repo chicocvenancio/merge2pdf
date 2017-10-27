@@ -20,6 +20,7 @@ app.config.update(
 @app.route('/', methods=['GET', 'POST'])
 def index():
     username = flask.session.get('username', None)
+    pdf_title = None
     if request.method == 'POST':
         if username:
             pass
@@ -36,11 +37,13 @@ def index():
         pages_list = [page for page in os.listdir() if page[-4:] in ['.jpg',
                                                                      '.tif']]
         pages_list.sort()
-        with open(cat.page_title + '.pdf', 'wb') as pdf_file:
-                pdf_file.write(img2pdf.convert(pages_list))
+        pdf_title = cat.page_title + '.pdf'
+        static_path = os.environ['HOME'] + '/www/python/static/'
+        with open(static_path + pdf_title, 'wb') as pdf_file:
+            pdf_file.write(img2pdf.convert(pages_list))
         # return 'PDF OK'
-
-    return flask.render_template('index.html', username=username)
+    return flask.render_template('index.html', username=username,
+                                 pdf=pdf_title)
 
 
 @app.route('/login')

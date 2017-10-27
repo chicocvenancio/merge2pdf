@@ -22,15 +22,29 @@
         <div class='lead'>This tool gets files from a Wikimedia Commons category and
             provides a PDF to be downloaded or uploaded to commons.
         </div>
-    <div id='output'></div>
+        <div class="h4"> Some features, including direct Commons upload are not yet
+            available, check back soon.
+        </div>
+
+    <div id='output'>
+        {% if  pdf %}
+        <p class="bg-success"> The PDF was sucessfully made 
+            <a href="//tools.wmflabs.org/merge2pdf/static/{{ pdf }}">Donwload PDF</a>
+        </p>
+        {% endif %}
+    </div>
     <form class='form' method=POST>
-        <label for="category">Category:</label>
-        <input class="form-control" type="text" id="category" name="category">
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input class="form-control" type="text" id="category" name="category" placeholder="Category:My category with pages" >
+            <p class="help-block">Enter the category name to be turned into a PDF
+            file with "Category:"</p>
+        </div>
         <label for="filename">File name</label>
-        <input class="form-control" type="text" id="filename" name="filename">
+        <input class="form-control disabled" type="text" disabled=true id="filename" name="filename">
         <label for="description">Description</label>
             {% raw %}
-        <textarea rows="12" class="form-control" name="description" id='description'>{{Information
+        <textarea rows="12" class="form-control disabled" disabled=true name="description" id='description'>{{Information
             | Description    = {{en|}}
             | Date           = 
             | Source         = 
