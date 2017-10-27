@@ -23,9 +23,14 @@ def index():
     pdf_title = None
     if request.method == 'POST':
         if username:
-            pass
-        site = mwclient.Site('commons.wikimedia.org')
-        print(request.form['category'])
+            site = mwclient.Site(
+                'commons.wikimedia.org',
+                consumer_token=app.config['CONSUMER_KEY'],
+                consumer_secret=app.config['CONSUMER_SECRET'],
+                access_token=flask.session['access_token']['key'],
+                access_secret=flask.session['access_token']['secret'])
+        else:
+            site = mwclient.Site('commons.wikimedia.org')
         cat = mwclient.listing.Category(site, request.form['category'])
         os.chdir(os.environ['HOME'] + '/category')
         if not os.path.isdir(cat.page_title):
@@ -41,7 +46,12 @@ def index():
         static_path = os.environ['HOME'] + '/www/python/static/'
         with open(static_path + pdf_title, 'wb') as pdf_file:
             pdf_file.write(img2pdf.convert(pages_list))
-        # return 'PDF OK'
+        if username:
+            with open(static_path + pdf_title, 'r') as pdf_file:
+                apijson = site.upload(file=pdf_file,
+                                      filename=request.form['filename'],
+                                      description=request.form['description'])
+            print(apijson)
     return flask.render_template('index.html', username=username,
                                  pdf=pdf_title)
 
