@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 import flask
+from flask import request
 import mwoauth
 import os
 import yaml
+import img2pdf
+import mwclient
 
 
 app = flask.Flask(__name__)
@@ -14,9 +17,29 @@ app.config.update(
     yaml.safe_load(open(os.path.join(__dir__, 'config.yaml'))))
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     username = flask.session.get('username', None)
+    if request.method == 'POST':
+        if username:
+            pass
+        site = mwclient.Site('commons.wikimedia.org')
+        print(request.form['category'])
+        cat = mwclient.listing.Category(site, request.form['category'])
+        os.chdir(os.environ['HOME'] + '/category')
+        if not os.path.isdir(cat.page_title):
+            os.mkdir(cat.page_title)
+        os.chdir(cat.page_title)
+        for page in cat:
+            with open(page.page_title, 'wb') as f:
+                page.download(f)
+        pages_list = [page for page in os.listdir() if page[-4:] in ['.jpg',
+                                                                     '.tif']]
+        pages_list.sort()
+        with open(cat.page_title + '.pdf', 'wb') as pdf_file:
+                pdf_file.write(img2pdf.convert(pages_list))
+        # return 'PDF OK'
+
     return flask.render_template('index.html', username=username)
 
 

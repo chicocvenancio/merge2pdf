@@ -23,14 +23,14 @@
             provides a PDF to be downloaded or uploaded to commons.
         </div>
     <div id='output'></div>
-    <form class='form'>
+    <form class='form' method=POST>
         <label for="category">Category:</label>
-        <input class="form-control" type="text" id="category">
+        <input class="form-control" type="text" id="category" name="category">
         <label for="filename">File name</label>
-        <input class="form-control" type="text" id="filename">
+        <input class="form-control" type="text" id="filename" name="filename">
         <label for="description">Description</label>
             {% raw %}
-        <textarea rows="12" class="form-control" id='description'>{{Information
+        <textarea rows="12" class="form-control" name="description" id='description'>{{Information
             | Description    = {{en|}}
             | Date           = 
             | Source         = 
@@ -45,8 +45,7 @@
         <p class="help-block">Enter the description of the file with license,
         permissions, category and anything else to go on the Commons page</p>
 
-        <input class='btn btn-primary' id='create' value='Create PDF' />
-        <input class='btn btn-success' id='upload_button' value='Upload' />
+        <input type=submit class='btn btn-primary' id='create' value='Create PDF' />
     </form>
 </div>
 </div>
