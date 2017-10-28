@@ -32,6 +32,11 @@
             <a href="//tools.wmflabs.org/merge2pdf/static/{{ pdf }}">Donwload PDF</a>
         </p>
         {% endif %}
+        {% if  pdf %}
+        <p class="bg-success"> The PDF was sucessfully sent to Wikimedia Commons
+            <a href="{{ commons }}">See file in Commons</a>
+        </p>
+        {% endif %}
     </div>
     <form class='form' method=POST>
         <div class="form-group">
@@ -40,26 +45,36 @@
             <p class="help-block">Enter the category name to be turned into a PDF
             file with "Category:"</p>
         </div>
-        <label for="filename">File name</label>
-        <input class="form-control " type="text"  id="filename" name="filename">
-        <label for="description">Description</label>
+        <div class="form-group">
+            <label for="filename">File name</label>
+            <input class="form-control " type="text"  id="filename"
+            name="filename" placeholder="My awesome file.pdf">
+            <p class="help-block">Enter the filename to be used for the
+            commons page, without "File:"</p>
+        <label for="description">Description (Wikitext)</label>
             {% raw %}
         <textarea rows="12" class="form-control"  name="description" id='description'>{{Information
-            | Description    = {{en|}}
-            | Date           = 
-            | Source         = 
-            | Author         = 
-            | Permission     = 
-            | Other_versions = 
-            }}
-            [[Category:]]
-            [[Category:PDFs made with merge2pdf]]
+    | Description    = {{en|}}
+    | Date           = 
+    | Source         = 
+    | Author         = 
+    | Permission     = 
+    | Other_versions = 
+}}
+[[Category:]]
+[[Category:PDFs made with merge2pdf]]
         </textarea>
             {% endraw %}
         <p class="help-block">Enter the description of the file with license,
-        permissions, category and anything else to go on the Commons page</p>
+        permissions, category and anything else to go on the Commons page.
+        This is the Wikitext of the page</p>
 
-        <input type=submit class='btn btn-primary' id='create' value='Create PDF' />
+        <input type=submit class='btn btn-primary' id='create'
+        {% if username %}
+            value='Create PDF and upload to Commons'
+        {% else %}
+            value="Create PDF and download it"
+        {% endif %} />
     </form>
 </div>
 </div>
