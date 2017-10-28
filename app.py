@@ -52,7 +52,10 @@ def index():
                 try:
                     result = site.upload(
                         file=pdf_file, filename=request.form.get('filename'),
-                        description=request.form.get('description'))
+                        description=request.form.get('description'),
+                        comment=("PDF made from a [[:category:{}|category]]"
+                                 " with [https://tools.wmflabs.org/merge2pdf/"
+                                 " merge2pdf]").format(cat.page_title))
                     if result['result'] == 'Success':
                         commons_file = result['imageinfo']['descriptionurl']
                 except Exception as e:
