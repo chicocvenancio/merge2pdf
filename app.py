@@ -21,6 +21,7 @@ app.config.update(
 def index():
     username = flask.session.get('username', None)
     pdf_title = None
+    commons_file = None
     if request.method == 'POST':
         if username:
             site = mwclient.Site(
@@ -47,13 +48,17 @@ def index():
         with open(static_path + pdf_title, 'wb') as pdf_file:
             pdf_file.write(img2pdf.convert(pages_list))
         if username:
-            with open(static_path + pdf_title, 'r') as pdf_file:
-                apijson = site.upload(file=pdf_file,
-                                      filename=request.form['filename'],
-                                      description=request.form['description'])
-            print(apijson)
+            with open(static_path + pdf_title, 'rb') as pdf_file:
+                try:
+                    result = site.upload(
+                        file=pdf_file, filename=request.form.get('filename'),
+                        description=request.form.get('description'))
+                    if result['result'] == 'Success':
+                        commons_file = result['imageinfo']['descriptionurl']
+                except Exception as e:
+                    print(e)
     return flask.render_template('index.html', username=username,
-                                 pdf=pdf_title)
+                                 pdf=pdf_title, commons=commons_file)
 
 
 @app.route('/login')
